@@ -4,6 +4,7 @@ import { SocialAuthService, SocialUser } from 'angularx-social-login';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { secret } from 'src/environments/secret';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,14 @@ export class AuthGuardService implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> {
-    if (this.cookieService.get('DSA20220425s')) {
+    /*
+    | -------------------------------------------------------------------
+    |  Create/update file secret.ts and secret.prod.ts in environments folder fill this code:
+    |  export const secret = {
+    |    cookie_name: 'cookie_name'
+    |  };
+    */
+    if (this.cookieService.get(secret.cookie_name)) {
       return true
     } else {
       return this.socialAuthService.authState.pipe(

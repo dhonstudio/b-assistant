@@ -5,9 +5,7 @@
 export const environment = {
   production: false,
   redirect_auth: 'http://localhost/ci_dhonstudio/angular/b-assistant',
-  AUTH_API: 'http://localhost/ci_api2/users/users/',
-  API_user: 'admin',
-  API_pw: 'admin'
+  
 };
 
 /*
