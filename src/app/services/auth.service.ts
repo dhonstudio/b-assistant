@@ -36,7 +36,7 @@ export class AuthService {
     return (await firstValueFrom(this.http.post(secret.AUTH_API, `email=${email}&password=${password}`, httpOptions)));
   }
 
-  async getUsers(email: string) {
-    return (await firstValueFrom(this.http.get<UsersResult>(`${secret.AUTH_API}?email=${email}`, httpOptions))).data;
+  async getUsers(params: {param: string, value: any}) {
+    return (await firstValueFrom(this.http.get<UsersResult>(`${secret.AUTH_API}?${params.param}=${params.value}`, httpOptions))).data;
   }
 }

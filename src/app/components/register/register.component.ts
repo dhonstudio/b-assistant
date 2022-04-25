@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from 'src/app/services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { environment } from 'src/environments/environment';
+import { secret } from 'src/environments/secret';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -45,11 +47,25 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private globalService: GlobalService,
+    private cookieService: CookieService,
   ) { 
-    this.createForm()
+    if (this.checkCookie()) this.createForm()
   }
 
   ngOnInit(): void {
+  }
+
+  private checkCookie() {
+    if (this.cookieService.get(secret.cookie_name)) {
+      const userId = parseInt(CryptoJS.AES.decrypt(this.cookieService.get(secret.cookie_name), secret.cookie_name).toString(CryptoJS.enc.Utf8))
+      this.authService.getUsers({param: "id_user", value: userId}).then(result => {
+        if (result.length > 0) {
+          // window.location.href = environment.redirect_auth
+          return false          
+        }
+      })     
+    }
+    return true
   }
 
   private createForm() {
@@ -71,7 +87,7 @@ export class RegisterComponent implements OnInit {
       async (response) => {
         this.globalService.showSnackBar('Success, please login', 3000)
         await new Promise((resolve) => {
-          setTimeout(resolve, 3000);
+          setTimeout(resolve, 2000);
         })   
         window.location.href = environment.redirect_auth
       },

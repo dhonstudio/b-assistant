@@ -33,11 +33,24 @@ export class AuthComponent implements OnInit {
     private authService: AuthService,
     private globalService: GlobalService,
     private cookieService: CookieService,
-  ) { 
-    this.createForm()
+  ) {
+    if (this.checkCookie()) this.createForm()
   }
 
   ngOnInit(): void {
+  }
+
+  private checkCookie() {
+    if (this.cookieService.get(secret.cookie_name)) {
+      const userId = parseInt(CryptoJS.AES.decrypt(this.cookieService.get(secret.cookie_name), secret.cookie_name).toString(CryptoJS.enc.Utf8))
+      this.authService.getUsers({param: "id_user", value: userId}).then(result => {
+        if (result.length > 0) {
+          // window.location.href = environment.redirect_auth
+          return false          
+        }
+      })     
+    }
+    return true
   }
 
   private createForm() {
@@ -56,10 +69,10 @@ export class AuthComponent implements OnInit {
       async (response) => {
         if (response.data) {
           this.globalService.showSnackBar('Success', 3000)
-          const user = (await this.authService.getUsers(this.formGroup.value.email))
+          const user = (await this.authService.getUsers({param: "email", value: this.formGroup.value.email}))
           this.cookieService.set(secret.cookie_name, CryptoJS.AES.encrypt(`${user[0].id_user}`, secret.cookie_name).toString(), 0.08, '/', '', true, 'Strict')
           await new Promise((resolve) => {
-            setTimeout(resolve, 3000);
+            setTimeout(resolve, 2000);
           })
           window.location.href = environment.redirect_auth
         } else {
