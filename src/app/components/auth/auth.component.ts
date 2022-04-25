@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { secret } from 'src/environments/secret';
 import * as CryptoJS from 'crypto-js';
+import { environment } from 'src/environments/environment';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -55,11 +56,12 @@ export class AuthComponent implements OnInit {
       async (response) => {
         if (response.data) {
           this.globalService.showSnackBar('Success', 3000)
+          const user = (await this.authService.getUsers(this.formGroup.value.email))
+          this.cookieService.set(secret.cookie_name, CryptoJS.AES.encrypt(`${user[0].id_user}`, secret.cookie_name).toString(), 0.08, '/', '', true, 'Strict')
           await new Promise((resolve) => {
             setTimeout(resolve, 3000);
           })
-          this.cookieService.set(secret.cookie_name, CryptoJS.AES.encrypt(`${user[0].id}`, secret.cookie_name).toString(), 0.08, '/', '', true, 'Strict')
-          // window.location.href = environment.redirect_auth
+          window.location.href = environment.redirect_auth
         } else {
           this.globalService.showSnackBar('Failed', 3000)
         }

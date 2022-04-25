@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { secret } from 'src/environments/secret';
-import { UsersVerify } from '../models/auth.model';
+import { Users, UsersResult, UsersVerify } from '../models/auth.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 
@@ -34,5 +34,9 @@ export class AuthService {
 
   async register(email: string, password: string) {
     return (await firstValueFrom(this.http.post(secret.AUTH_API, `email=${email}&password=${password}`, httpOptions)));
+  }
+
+  async getUsers(email: string) {
+    return (await firstValueFrom(this.http.get<UsersResult>(`${secret.AUTH_API}?email=${email}`, httpOptions))).data;
   }
 }

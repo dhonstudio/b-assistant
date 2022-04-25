@@ -1,4 +1,5 @@
 export interface Users {
+    id_user: number;
     email: string;
     password: string;
 }
@@ -6,7 +7,7 @@ export interface Users {
 export interface UsersResult {
     response: string;
     status: number;
-    data: Users;
+    data: Users[];
 }
 
 export interface UsersVerify {
