@@ -7,6 +7,7 @@ import { IndexComponent } from './components/index/index.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { secret } from 'src/environments/secret';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,9 @@ import { secret } from 'src/environments/secret';
     BrowserModule,
     AppRoutingModule,
 
-    SocialLoginModule
+    SocialLoginModule,
+
+    BrowserAnimationsModule
   ],
   providers: [
     {provide: 'SocialAuthServiceConfig', useValue: {
