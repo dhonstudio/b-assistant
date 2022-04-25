@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  redirect_auth: 'http://localhost/ci_dhonstudio/angular/b-assistant',
+  AUTH_API: 'http://localhost/ci_api2/users/users/',
+  API_user: 'admin',
+  API_pw: 'admin'
 };
 
 /*

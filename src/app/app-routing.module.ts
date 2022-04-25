@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './components/auth/auth.component';
 import { IndexComponent } from './components/index/index.component';
+import { RegisterComponent } from './components/register/register.component';
 import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'auth', 
     component: AuthComponent,
+  },
+  {
+    path: 'register', 
+    component: RegisterComponent,
   },
   {
     path: 'kesku', 
