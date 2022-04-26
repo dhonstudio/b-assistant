@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from 'src/app/services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { environment } from 'src/environments/environment';
 import { secret } from 'src/environments/secret';
+import * as CryptoJS from 'crypto-js';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -35,6 +36,8 @@ export function ConfirmedValidator(controlName: string, matchingControlName: str
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  loaded = false
+
   matcher = new MyErrorStateMatcher();
   hidePassword = true;
 
@@ -60,11 +63,13 @@ export class RegisterComponent implements OnInit {
       const userId = parseInt(CryptoJS.AES.decrypt(this.cookieService.get(secret.cookie_name), secret.cookie_name).toString(CryptoJS.enc.Utf8))
       this.authService.getUsers({param: "id_user", value: userId}).then(result => {
         if (result.length > 0) {
-          // window.location.href = environment.redirect_auth
-          return false          
+          this.loaded = true
+          window.location.href = environment.redirect_auth
+          return false
         }
-      })     
+      })
     }
+    this.loaded = true
     return true
   }
 
@@ -83,16 +88,19 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
+    this.loaded = false
     this.authService.register(this.formGroup.value.email, this.formGroup.value.password).then(
       async (response) => {
         this.globalService.showSnackBar('Success, please login', 3000)
         await new Promise((resolve) => {
           setTimeout(resolve, 2000);
-        })   
+        })
         window.location.href = environment.redirect_auth
+        this.loaded = true
       },
       (error) => {
         this.globalService.showSnackBar('Failed, email already registered', 3000)
+        this.loaded = true
       }
     )
   }

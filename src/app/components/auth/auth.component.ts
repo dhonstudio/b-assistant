@@ -21,6 +21,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
+  loaded = false
+
   matcher = new MyErrorStateMatcher();
   hidePassword = true;
 
@@ -45,11 +47,13 @@ export class AuthComponent implements OnInit {
       const userId = parseInt(CryptoJS.AES.decrypt(this.cookieService.get(secret.cookie_name), secret.cookie_name).toString(CryptoJS.enc.Utf8))
       this.authService.getUsers({param: "id_user", value: userId}).then(result => {
         if (result.length > 0) {
-          // window.location.href = environment.redirect_auth
+          this.loaded = true
+          window.location.href = environment.redirect_auth
           return false          
         }
       })     
     }
+    this.loaded = true
     return true
   }
 
@@ -65,6 +69,7 @@ export class AuthComponent implements OnInit {
   }
 
   onLogin() {
+    this.loaded = false
     this.authService.login(this.formGroup.value.email, this.formGroup.value.password).then(
       async (response) => {
         if (response.data) {
@@ -75,8 +80,10 @@ export class AuthComponent implements OnInit {
             setTimeout(resolve, 2000);
           })
           window.location.href = environment.redirect_auth
+          this.loaded = true
         } else {
           this.globalService.showSnackBar('Failed', 3000)
+          this.loaded = true
         }
       }
     )

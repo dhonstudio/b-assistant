@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressBarModule
   ],
   providers: [
     {provide: 'SocialAuthServiceConfig', useValue: {

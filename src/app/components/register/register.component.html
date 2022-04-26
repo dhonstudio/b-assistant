@@ -1,62 +1,64 @@
-  <div style="display:flex;justify-content:center;padding-top:4em;">
-    <mat-card class="register-card">
-      <mat-card-subtitle>B Assistant</mat-card-subtitle>
-      <mat-card-title>Register</mat-card-title>
-      <mat-card-content>
-        <p>
-          <mat-form-field hintLabel="Max 100 characters" appearance="fill" style="width: 100%;">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" [formControl]="email" [errorStateMatcher]="matcher" #input maxlength="100" placeholder="Ex. email@domain.com">
-            <button mat-icon-button matSuffix disabled>
-              <mat-icon>{{'email'}}</mat-icon>
-            </button>
-            <mat-hint align="end">{{input.value?.length || 0}}/100</mat-hint>
-            <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
-              Please enter a valid email address
-            </mat-error>
-            <mat-error *ngIf="email.hasError('required')">
-              Email is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </p>
+<mat-progress-bar mode="indeterminate" *ngIf="!loaded"></mat-progress-bar>
 
-        <p>
-          <mat-form-field hintLabel="Max 20 characters" appearance="fill" style="width: 100%;">
-            <mat-label>Password</mat-label>
-            <input matInput [formControl]="password" [type]="hidePassword ? 'password' : 'text'" #input maxlength="20" placeholder="Ex. P@ssw0rd">
-            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-hint align="end">{{input.value?.length || 0}}/20</mat-hint>
-            <mat-error *ngIf="password.hasError('required')">
-              Password is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </p>
+<div style="display:flex;justify-content:center;padding-top:4em;">
+  <mat-card class="register-card">
+    <mat-card-subtitle>B Assistant</mat-card-subtitle>
+    <mat-card-title>Register</mat-card-title>
+    <mat-card-content>
+      <p>
+        <mat-form-field hintLabel="Max 100 characters" appearance="fill" style="width: 100%;">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [formControl]="email" [errorStateMatcher]="matcher" #input maxlength="100" placeholder="Ex. email@domain.com">
+          <button mat-icon-button matSuffix disabled>
+            <mat-icon>{{'email'}}</mat-icon>
+          </button>
+          <mat-hint align="end">{{input.value?.length || 0}}/100</mat-hint>
+          <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="email.hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </p>
 
-        <p>
-          <mat-form-field hintLabel="Max 20 characters" appearance="fill" style="width: 100%;">
-            <mat-label>Repeat Password</mat-label>
-            <input matInput [formControl]="repeat_password" type="password" #input maxlength="20" placeholder="Ex. P@ssw0rd">
-            <button mat-icon-button matSuffix disabled>
-              <mat-icon>{{'lock'}}</mat-icon>
-            </button>
-            <mat-hint align="end">{{input.value?.length || 0}}/20</mat-hint>
-            <mat-error *ngIf="repeat_password.hasError('required')">
-              Repeat Password is <strong>required</strong>
-            </mat-error>
-            <mat-error *ngIf="repeat_password.hasError('confirmedValidator')">
-              Passwords do not match
-            </mat-error> 
-          </mat-form-field>
-        </p>
-      </mat-card-content>
-      <mat-divider inset></mat-divider>
-      <mat-card-actions style="float: right;">
-        <button mat-button>BACK</button>
-        <button mat-button type="submit" (click)="onRegister()" [disabled]="isInvalid()">REGISTER</button>
-      </mat-card-actions>
-      <mat-card-footer>
-      </mat-card-footer>
-    </mat-card>
-  </div>
+      <p>
+        <mat-form-field hintLabel="Max 20 characters" appearance="fill" style="width: 100%;">
+          <mat-label>Password</mat-label>
+          <input matInput [formControl]="password" [type]="hidePassword ? 'password' : 'text'" #input maxlength="20" placeholder="Ex. P@ssw0rd">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-hint align="end">{{input.value?.length || 0}}/20</mat-hint>
+          <mat-error *ngIf="password.hasError('required')">
+            Password is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field hintLabel="Max 20 characters" appearance="fill" style="width: 100%;">
+          <mat-label>Repeat Password</mat-label>
+          <input matInput [formControl]="repeat_password" type="password" #input maxlength="20" placeholder="Ex. P@ssw0rd">
+          <button mat-icon-button matSuffix disabled>
+            <mat-icon>{{'lock'}}</mat-icon>
+          </button>
+          <mat-hint align="end">{{input.value?.length || 0}}/20</mat-hint>
+          <mat-error *ngIf="repeat_password.hasError('required')">
+            Repeat Password is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="repeat_password.hasError('confirmedValidator')">
+            Passwords do not match
+          </mat-error> 
+        </mat-form-field>
+      </p>
+    </mat-card-content>
+    <mat-divider inset></mat-divider>
+    <mat-card-actions style="float: right;">
+      <button mat-button>BACK</button>
+      <button mat-button type="submit" (click)="onRegister()" [disabled]="isInvalid()">REGISTER</button>
+    </mat-card-actions>
+    <mat-card-footer>
+    </mat-card-footer>
+  </mat-card>
+</div>
